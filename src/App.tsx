@@ -3,8 +3,8 @@ import Search from './components/Search'
 import Spinner from './components/Spinner';
 import MovieCard from './components/MovieCard';
 import { useDebounce } from 'react-use';
-import { updateSearchCount } from './appwrite';
-import { Movie } from './types/interfaces';
+import { getTrendingMovies, updateSearchCount } from './appwrite';
+import { DatabaseMovie, Movie } from './types/interfaces';
 
 const API_BASE_URL = 'https://api.themoviedb.org/3'
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -19,16 +19,30 @@ const API_OPTIONS = {
 
 const App = () => {
     const [searchTerm, setSearchTerm] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
-    const [movieList, setMovieList] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+
+    const [movieList, setMovieList] = useState([]);
+    const [isLoadingList, setIsLoadingList] = useState(false);
+    const [errorMessageList, setErrorMessageList] = useState("");
+    
+    const [trendingMovies, setTrendingMovies] = useState([]);
+    //const [isLoadingTrending, setIsLoadingTrending] = useState(false);
+    //const [errorMessageTrending, setErrorMessageTrending] = useState("");
+
+    /* TODO:
+        Light and Dark Mode Toggle
+        Language Toggle that changes the language of the data fetched
+        Pagination or Infinite Scroll
+        Movie Detail Modal
+    */
+    
+    
 
     useDebounce(() => setDebouncedSearchTerm(searchTerm), 500, [searchTerm]);
 
     const fetchMovies = async (query = "") => {
-        setIsLoading(true);
-        setErrorMessage("");
+        setIsLoadingList(true);
+        setErrorMessageList("");
 
         try {
             const endpoint = query ?
@@ -44,7 +58,7 @@ const App = () => {
             const data = await response.json();
             
             if(data.response === 'False') {
-                setErrorMessage(data.Error || 'Failed to fetch movies');
+                setErrorMessageList(data.Error || 'Failed to fetch movies');
                 setMovieList([]);
                 return;
             }
@@ -56,15 +70,30 @@ const App = () => {
             }
         } catch (error) {
             console.error(`Error fetching movies: ${error}`);
-            setErrorMessage("Error fetching movies. Please try again later.");
+            setErrorMessageList("Error fetching movies. Please try again later.");
         } finally {
-            setIsLoading(false);
+            setIsLoadingList(false);
+        }
+    }
+
+    const loadTrendingMovies = async () => {
+        try {
+            const movies = await getTrendingMovies();
+
+            setTrendingMovies(movies || []);
+        } catch (error) {
+            console.error(`Error loading trending movies: ${error}`);
+            //setErrorMessageTrending("Error loading trending movies. Please try again later.");
         }
     }
 
     useEffect(() => {
         fetchMovies(debouncedSearchTerm);
     }, [debouncedSearchTerm]);
+
+    useEffect(() => {
+        loadTrendingMovies();
+    }, []);
 
 
     return (
@@ -78,12 +107,25 @@ const App = () => {
                     <h1>Find <span className='text-gradient'>Movies</span> You'll Enjoy Without the Hassle</h1>
                     <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
                 </header>
+                {trendingMovies.length > 0 && (
+                    <section className='trending'>
+                        <h2>Trending Movies</h2>
+                        <ul>
+                            {trendingMovies.map((movie: DatabaseMovie, index: number) => (
+                                <li key={movie.$id}>
+                                    <p>{index + 1}</p>
+                                    <img src={movie.poster_url} alt={movie.searchTerm} />
+                                </li>
+                            ))}
+                        </ul>
+                    </section>
+                )}
                 <section className='all-movies'>
-                    <h2 className='mt-[40px]'>All Movies</h2>
-                    {isLoading ? (
+                    <h2>All Movies</h2>
+                    {isLoadingList ? (
                         <Spinner />
-                    ): errorMessage ? (
-                        <p className='text-red-500'>{errorMessage}</p>
+                    ): errorMessageList ? (
+                        <p className='text-red-500'>{errorMessageList}</p>
                     ) : (
                         <ul>
                             {movieList.map((movie: Movie) => (

@@ -15,3 +15,11 @@ export interface Movie {
 export interface MovieCardProps {
     movie: Movie;
 }
+
+export interface DatabaseMovie {
+    $id: string;
+    count: number;
+    movied_id: number;
+    poster_url: string;
+    searchTerm: string;
+}
