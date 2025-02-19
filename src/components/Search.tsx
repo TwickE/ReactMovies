@@ -1,7 +1,4 @@
-interface SearchProps {
-    searchTerm: string
-    setSearchTerm: (searchTerm: string) => void
-}
+import { SearchProps } from "../types/interfaces"
 
 const Search = ({searchTerm, setSearchTerm}: SearchProps) => {
   return (
