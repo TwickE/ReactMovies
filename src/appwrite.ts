@@ -17,19 +17,31 @@ export const updateSearchCount = async (searchTerm: string, movie: Movie) => {
             Query.equal('searchTerm', searchTerm),
         ]);
 
-        if(result.documents.length > 0) {
+        if (result.documents.length > 0) {
             const doc = result.documents[0];
 
             await database.updateDocument(DATABASE_ID, COLLECTION_ID, doc.$id, {
                 count: doc.count + 1,
             });
         } else {
-            await database.createDocument(DATABASE_ID, COLLECTION_ID, ID.unique(), {
-                searchTerm,
-                count: 1,
-                movie_id: movie.id,
-                poster_url: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
-            });
+            const movieId = await database.listDocuments(DATABASE_ID, COLLECTION_ID, [
+                Query.equal('movie_id', movie.id),
+            ]);
+
+            if (movieId.documents.length > 0) {
+                const doc2 = movieId.documents[0];
+
+                await database.updateDocument(DATABASE_ID, COLLECTION_ID, doc2.$id, {
+                    count: doc2.count + 1,
+                });
+            } else {
+                await database.createDocument(DATABASE_ID, COLLECTION_ID, ID.unique(), {
+                    searchTerm,
+                    count: 1,
+                    movie_id: movie.id,
+                    poster_url: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+                });
+            }
         }
     } catch (error) {
         console.log(error);
