@@ -5,6 +5,7 @@ import MovieCard from './components/MovieCard';
 import { useDebounce } from 'react-use';
 import { getTrendingMovies, updateSearchCount } from './appwrite';
 import { DatabaseMovie, Movie } from './types/interfaces';
+import ThemeSwitch from './components/ThemeSwitch';
 
 const API_BASE_URL = 'https://api.themoviedb.org/3'
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -101,10 +102,11 @@ const App = () => {
 
     return (
         <main>
-            <div className='pattern'>
-
-            </div>
+            <div className='pattern'></div>
             <div className='wrapper'>
+                <div className='flex justify-end w-full'>
+                    <ThemeSwitch />
+                </div>
                 <header>
                     <img src='./hero.png' />
                     <h1>Find <span className='text-gradient'>Movies</span> You'll Enjoy Without the Hassle</h1>
