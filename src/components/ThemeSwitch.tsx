@@ -41,7 +41,7 @@ const ThemeSwitch = () => {
     };
 
     return (
-        <div className="flex gap-0.5 p-1 rounded-full bg-dark-100 shadow-inner shadow-light-100/10">
+        <div className="flex gap-0.5 p-1 rounded-full bg-light-mode-100 dark:bg-dark-100 shadow-inner shadow-light-100/10">
             <button
                 className={getButtonClasses('system')}
                 aria-label="System theme"

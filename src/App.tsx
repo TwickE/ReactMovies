@@ -6,6 +6,7 @@ import { useDebounce } from 'react-use';
 import { getTrendingMovies, updateSearchCount } from './appwrite';
 import { DatabaseMovie, Movie } from './types/interfaces';
 import ThemeSwitch from './components/ThemeSwitch';
+import LanguageSwitch from './components/LanguageSwitch';
 
 const API_BASE_URL = 'https://api.themoviedb.org/3'
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -104,7 +105,8 @@ const App = () => {
         <main>
             <div className='pattern'></div>
             <div className='wrapper'>
-                <div className='flex justify-end w-full'>
+                <div className='flex justify-end gap-4 w-full'>
+                    <LanguageSwitch />
                     <ThemeSwitch />
                 </div>
                 <header>

@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
+
+@plugin "tailwindcss-animate";
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
 
 @import "tailwindcss";
@@ -55,7 +57,7 @@
 
 @layer components {
     .pattern {
-        @apply bg-hero-pattern w-screen h-screen bg-center bg-cover absolute z-0;
+        @apply fixed inset-0 bg-hero-pattern bg-center bg-cover z-0;
     }
 
     .wrapper {
@@ -175,4 +177,15 @@
     &::-webkit-scrollbar {
         display: none;
     }
+}
+
+:root {
+    --radius: 0.6rem;
+}
+
+@theme inline {
+    --radius-sm: calc(var(--radius) - 4px);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) + 4px);
 }
