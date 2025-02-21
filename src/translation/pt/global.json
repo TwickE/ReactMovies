@@ -1,0 +1,19 @@
+{
+    "languageSwitch": {
+        "language": "Língua"
+    },
+    "app": {
+        "titlePt1": "Encontra ",
+        "titlePt2": "Filmes ",
+        "titlePt3": "Que Vais Gostar Sem Complicações",
+        "trendingMovies": "Filmes Populares",
+        "allMovies": "Todos os Filmes",
+        "errors": {
+            "fetchMovies": "Erro ao consultar filmes. Tente novamente mais tarde.",
+            "fetchTrendingMovies": "Erro ao consultar filmes populares. Tente novamente mais tarde."
+        }
+    },
+    "search": {
+        "placeholder": "Pesquise entre milhares de filmes..."
+    }
+}

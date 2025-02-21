@@ -1,0 +1,19 @@
+{
+    "languageSwitch": {
+        "language": "Language"
+    },
+    "app": {
+        "titlePt1": "Find ",
+        "titlePt2": "Movies ",
+        "titlePt3": "You'll Enjoy Without the Hassle",
+        "trendingMovies": "Trending Movies",
+        "allMovies": "All Movies",
+        "errors": {
+            "fetchMovies": "Error fetching movies. Please try again later.",
+            "fetchTrendingMovies": "Error fetching trending movies. Please try again later."
+        }
+    },
+    "search": {
+        "placeholder": "Search through thousands of movies..."
+    }
+}

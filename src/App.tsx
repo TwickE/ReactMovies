@@ -7,6 +7,7 @@ import { getTrendingMovies, updateSearchCount } from './appwrite';
 import { DatabaseMovie, Movie } from './types/interfaces';
 import ThemeSwitch from './components/ThemeSwitch';
 import LanguageSwitch from './components/LanguageSwitch';
+import { useTranslation } from 'react-i18next';
 
 const API_BASE_URL = 'https://api.themoviedb.org/3'
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -31,6 +32,8 @@ const App = () => {
     const [isLoadingTrending, setIsLoadingTrending] = useState(false);
     const [errorMessageTrending, setErrorMessageTrending] = useState("");
 
+    const {t} = useTranslation("global");
+
     /* TODO:
         Light and Dark Mode Toggle
         Language Toggle that changes the language of the data fetched
@@ -54,13 +57,13 @@ const App = () => {
             const response = await fetch(endpoint, API_OPTIONS);
 
             if (!response.ok) {
-                throw new Error('Failed to fetch movies');
+                throw new Error(t("app.errors.fetchMovies"));
             }
 
             const data = await response.json();
 
             if (data.response === 'False') {
-                setErrorMessageList(data.Error || 'Failed to fetch movies');
+                setErrorMessageList(data.Error || t("app.errors.fetchMovies"));
                 setMovieList([]);
                 return;
             }
@@ -72,7 +75,7 @@ const App = () => {
             }
         } catch (error) {
             console.error(`Error fetching movies: ${error}`);
-            setErrorMessageList("Error fetching movies. Please try again later.");
+            setErrorMessageList(t("app.errors.fetchMovies"));
         } finally {
             setIsLoadingList(false);
         }
@@ -86,7 +89,7 @@ const App = () => {
             setTrendingMovies(movies || []);
         } catch (error) {
             console.error(`Error loading trending movies: ${error}`);
-            setErrorMessageTrending("Error loading trending movies. Please try again later.");
+            setErrorMessageTrending(t("app.errors.fetchTrendingMovies"));
         } finally {
             setIsLoadingTrending(false);
         }
@@ -111,12 +114,16 @@ const App = () => {
                 </div>
                 <header>
                     <img src='./hero.png' />
-                    <h1>Find <span className='text-gradient-light dark:text-gradient'>Movies</span> You'll Enjoy Without the Hassle</h1>
+                    <h1>
+                        {t("app.titlePt1")}
+                        <span className='text-gradient-light dark:text-gradient'>{t("app.titlePt2")}</span>
+                        {t("app.titlePt3")}
+                    </h1>
                     <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
                 </header>
                 {trendingMovies.length > 0 && (
                     <section className='trending'>
-                        <h2>Trending Movies</h2>
+                        <h2>{t("app.trendingMovies")}</h2>
                         {isLoadingTrending ? (
                             <Spinner />
                         ) : errorMessageTrending ? (
@@ -134,7 +141,7 @@ const App = () => {
                     </section>
                 )}
                 <section className='all-movies'>
-                    <h2>All Movies</h2>
+                    <h2>{t("app.allMovies")}</h2>
                     {isLoadingList ? (
                         <Spinner />
                     ) : errorMessageList ? (
