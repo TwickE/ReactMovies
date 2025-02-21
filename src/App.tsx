@@ -32,28 +32,24 @@ const App = () => {
     const [isLoadingTrending, setIsLoadingTrending] = useState(false);
     const [errorMessageTrending, setErrorMessageTrending] = useState("");
 
-    const {t} = useTranslation("global");
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
 
-    /* TODO:
-        Language Toggle that changes the language of the data fetched
-        Pagination or Infinite Scroll
-        Movie Detail Modal
-    */
-
-
+    const { t } = useTranslation("global");
 
     useDebounce(() => setDebouncedSearchTerm(searchTerm), 500, [searchTerm]);
 
-    const fetchMovies = async (query = "") => {
+    const fetchMovies = async (query = "", pageNumber = 1) => {
         setIsLoadingList(true);
         setErrorMessageList("");
 
         try {
             const currentLanguage = localStorage.getItem('language') || 'en';
             const endpoint = query ?
-                `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}&include_adult=false&language=${currentLanguage === 'en' ? 'en-Us' : 'pt-PT'}&page=1`
+                `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}&include_adult=false&language=${currentLanguage === 'en' ? 'en-Us' : 'pt-PT'}&page=${pageNumber}`
                 :
-                `${API_BASE_URL}/discover/movie?include_adult=false&include_video=false&language=${currentLanguage === 'en' ? 'en-Us' : 'pt-PT'}&page=1&sort_by=popularity.desc`;
+                `${API_BASE_URL}/discover/movie?include_adult=false&include_video=false&language=${currentLanguage === 'en' ? 'en-Us' : 'pt-PT'}&page=${pageNumber}&sort_by=popularity.desc`;
+
             const response = await fetch(endpoint, API_OPTIONS);
 
             if (!response.ok) {
@@ -68,9 +64,10 @@ const App = () => {
                 return;
             }
 
-            setMovieList(data.results || []);
+            setMovieList(prev => pageNumber === 1 ? data.results : [...prev, ...data.results]);
+            setHasMore(data.page < data.total_pages);
 
-            if (query && data.results.length > 0) {
+            if (query && data.results.length > 0 && pageNumber === 1) {
                 await updateSearchCount(query, data.results[0]);
             }
         } catch (error) {
@@ -96,8 +93,30 @@ const App = () => {
     }
 
     useEffect(() => {
-        fetchMovies(debouncedSearchTerm);
+        const handleScroll = () => {
+            if (
+                window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 100 &&
+                !isLoadingList &&
+                hasMore
+            ) {
+                setPage(prev => prev + 1);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [isLoadingList, hasMore]);
+
+    useEffect(() => {
+        setPage(1); // Reset page when search term changes
+        fetchMovies(debouncedSearchTerm, 1);
     }, [debouncedSearchTerm]);
+
+    useEffect(() => {
+        if (page > 1) {
+            fetchMovies(debouncedSearchTerm, page);
+        }
+    }, [page]);
 
     useEffect(() => {
         loadTrendingMovies();
@@ -142,16 +161,17 @@ const App = () => {
                 )}
                 <section className='all-movies'>
                     <h2>{t("app.allMovies")}</h2>
-                    {isLoadingList ? (
-                        <Spinner />
-                    ) : errorMessageList ? (
+                    {errorMessageList ? (
                         <p className='text-red-500'>{errorMessageList}</p>
                     ) : (
-                        <ul>
-                            {movieList.map((movie: Movie) => (
-                                <MovieCard key={movie.id} movie={movie} />
-                            ))}
-                        </ul>
+                        <>
+                            <ul>
+                                {movieList.map((movie: Movie) => (
+                                    <MovieCard key={movie.id} movie={movie} />
+                                ))}
+                            </ul>
+                            {isLoadingList && <Spinner />}
+                        </>
                     )}
                 </section>
             </div>
@@ -161,3 +181,7 @@ const App = () => {
 }
 
 export default App
+
+/* TODO:
+        Movie Detail Modal
+    */

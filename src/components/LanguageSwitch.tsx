@@ -27,14 +27,14 @@ const LanguageSwitch = () => {
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className="flex items-center gap-2 pr-1 pl-4 rounded-full text-white bg-light-mode-100 dark:bg-dark-100 shadow-inner shadow-light-100/10">
+            <DropdownMenuTrigger className="flex items-center gap-2 pr-1 pl-4 rounded-full text-white bg-light-mode-100 dark:bg-dark-100 shadow-inner shadow-light-100/10 cursor-pointer">
                 {
                     i18n.language === 'pt' ? "PT" : "EN"
                 }
                 <img
                     src={i18n.language === 'pt' ? "portuguese.png" : "english.png"}
                     alt={i18n.language === 'pt' ? "portuguese flag" : "english flag"}
-                    className="w-8 h-8 cursor-pointer"
+                    className="w-8 h-8"
                 />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="bg-light-mode-100 dark:bg-dark-100 shadow-inner shadow-light-100/10">
