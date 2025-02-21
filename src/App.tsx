@@ -35,7 +35,6 @@ const App = () => {
     const {t} = useTranslation("global");
 
     /* TODO:
-        Light and Dark Mode Toggle
         Language Toggle that changes the language of the data fetched
         Pagination or Infinite Scroll
         Movie Detail Modal
@@ -50,10 +49,11 @@ const App = () => {
         setErrorMessageList("");
 
         try {
+            const currentLanguage = localStorage.getItem('language') || 'en';
             const endpoint = query ?
-                `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}`
+                `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}&include_adult=false&language=${currentLanguage === 'en' ? 'en-Us' : 'pt-PT'}&page=1`
                 :
-                `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
+                `${API_BASE_URL}/discover/movie?include_adult=false&include_video=false&language=${currentLanguage === 'en' ? 'en-Us' : 'pt-PT'}&page=1&sort_by=popularity.desc`;
             const response = await fetch(endpoint, API_OPTIONS);
 
             if (!response.ok) {

@@ -22,6 +22,7 @@ const LanguageSwitch = () => {
     const handleChangeLanguage = (lang: string) => {
         i18n.changeLanguage(lang);
         localStorage.setItem('language', lang);
+        window.location.reload();
     }
 
     return (
