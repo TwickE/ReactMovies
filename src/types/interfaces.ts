@@ -23,3 +23,20 @@ export interface DatabaseMovie {
     poster_url: string;
     searchTerm: string;
 }
+
+export interface MovieDetails {
+    budget: number;
+    genres: [
+        {
+            name: string;
+        }
+    ];
+    overview: string;
+    poster_path: string;
+    release_date: string;
+    revenue: number;
+    runtime: number;
+    status: string;
+    title: string;
+    vote_average: number;
+}
