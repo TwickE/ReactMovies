@@ -14,6 +14,8 @@
     --color-light-300: #272aa3;
     --color-light-400: #13168C;
 
+    --color-accent: #221F3D;
+
     --color-gray-100: #9ca4ab;
 
     --color-dark-100: #0f0d23;
@@ -149,7 +151,8 @@
     }
 
     .shad-dialog {
-        @apply text-white! bg-light-mode-100! dark:bg-dark-100! p-12! rounded-2xl! shadow-inner! shadow-light-100/10!;
+        @apply text-white! bg-light-mode-100! dark:bg-dark-100! p-12! rounded-2xl! drop-shadow-[0px_0px_100px_rgba(171,139,255,0.5)]! shadow-inner! shadow-light-100/10! 
+        2xl:w-[65vw]! max-w-[80vw]!;
     }
 }
 

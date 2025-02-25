@@ -15,5 +15,13 @@
     },
     "search": {
         "placeholder": "Pesquise entre milhares de filmes..."
+    },
+    "movieCard": {
+        "dialogDescription": "Mais informações sobre o filme.",
+        "genres": "Géneros",
+        "overview": "Sinopse",
+        "releaseDate": "Data de Lançamento",
+        "budget": "Orçamento",
+        "revenue": "Lucro"
     }
 }

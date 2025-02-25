@@ -15,5 +15,13 @@
     },
     "search": {
         "placeholder": "Search through thousands of movies..."
+    },
+    "movieCard": {
+        "dialogDescription": "More information about the movie.",
+        "genres": "Genres",
+        "overview": "Overview",
+        "releaseDate": "Release Date",
+        "budget": "Budget",
+        "revenue": "Revenue"
     }
 }
