@@ -28,7 +28,7 @@ const App = () => {
     const [isLoadingList, setIsLoadingList] = useState(false);
     const [errorMessageList, setErrorMessageList] = useState("");
 
-    const [trendingMovies, setTrendingMovies] = useState([]);
+    const [trendingMovies, setTrendingMovies] = useState<DatabaseMovie[]>([]);
     const [isLoadingTrending, setIsLoadingTrending] = useState(false);
     const [errorMessageTrending, setErrorMessageTrending] = useState("");
 

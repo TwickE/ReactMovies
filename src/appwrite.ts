@@ -55,7 +55,14 @@ export const getTrendingMovies = async () => {
             Query.orderDesc('count'),
         ]);
 
-        return result.documents;
+        /* return result.documents; */
+        return result.documents.map(doc => ({
+            $id: doc.$id,
+            count: doc.count,
+            movied_id: doc.movied_id,
+            poster_url: doc.poster_url,
+            searchTerm: doc.searchTerm
+        }));
     } catch (error) {
         console.log(error);
     }

@@ -73,7 +73,7 @@ const MovieCard = ({ movie }: MovieCardProps) => {
             <Dialog onOpenChange={handleDialogOpen}>
                 <DialogTrigger className='cursor-pointer movie-card'>
                     <img
-                        src={poster_path ? `https://image.tmdb.org/t/p/w500/${poster_path}` : '/no-movie.png'}
+                        src={poster_path ? `https://image.tmdb.org/t/p/w500/${poster_path}` : 'no-movie.png'}
                         alt={title}
                     />
                     <div className="mt-4">
@@ -125,7 +125,7 @@ const MovieCard = ({ movie }: MovieCardProps) => {
                             </div>
                             <div className="flex items-start gap-8 flex-col 2xl:flex-row">
                                 <img
-                                    src={movieData?.poster_path ? `https://image.tmdb.org/t/p/w500/${movieData?.poster_path}` : '/no-movie.png'}
+                                    src={movieData?.poster_path ? `https://image.tmdb.org/t/p/w500/${movieData?.poster_path}` : 'no-movie.png'}
                                     alt={movieData?.title || "N/A"}
                                     className="h-auto w-full max-w-[175px] md:max-w-[300px] 2xl:max-w-[400px] rounded-lg m-auto 2xl:m-0"
                                 />
