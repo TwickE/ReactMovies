@@ -16,12 +16,14 @@ const LanguageSwitch = () => {
         const savedLanguage = localStorage.getItem('language');
         if (savedLanguage) {
             i18n.changeLanguage(savedLanguage);
+            document.documentElement.lang = savedLanguage === 'pt' ? 'pt-PT' : savedLanguage;
         }
     }, [i18n]);
 
     const handleChangeLanguage = (lang: string) => {
         i18n.changeLanguage(lang);
         localStorage.setItem('language', lang);
+        document.documentElement.lang = lang === 'pt' ? 'pt-PT' : lang;
         window.location.reload();
     }
 
